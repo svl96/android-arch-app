@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">MyNotesAndroid</string>
     <string name="action_settings">Settings</string>
+    <string name="test_note">Test Note</string>
+    <string name="title_label">Title</string>
+    <string name="content_label">Content</string>
+    <string name="save_action">Save</string>
 </resources>

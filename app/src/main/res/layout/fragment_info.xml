@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/edit_views_margin_top"
+            android:labelFor="@id/title_edit"
+            android:text="@string/title_label"
+            android:textAlignment="center"
+            android:textSize="@dimen/edit_label_text_size" />
+
+        <EditText
+            android:id="@+id/title_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/edit_note_padding"
+            android:paddingEnd="@dimen/edit_note_padding"
+            android:layout_marginTop="@dimen/note_edit_field_margin_top"
+            android:layout_marginStart="@dimen/edit_fields_margin_side"
+            android:layout_marginEnd="@dimen/edit_fields_margin_side"
+            android:hint="@string/title_label"
+            android:inputType="textCapSentences"/>
+
+        <TextView
+            android:id="@+id/content_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/content_edit"
+            android:layout_marginTop="@dimen/edit_views_margin_top"
+            android:text="@string/content_label"
+            android:textAlignment="center"
+            android:textSize="@dimen/edit_label_text_size"/>
+
+        <EditText
+            android:id="@+id/content_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/edit_note_padding"
+            android:paddingEnd="@dimen/edit_note_padding"
+            android:layout_marginStart="@dimen/edit_fields_margin_side"
+            android:layout_marginEnd="@dimen/edit_fields_margin_side"
+            android:layout_marginTop="@dimen/note_edit_field_margin_top"
+            android:hint="@string/content_label"
+            android:inputType="textMultiLine"/>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+</ScrollView>

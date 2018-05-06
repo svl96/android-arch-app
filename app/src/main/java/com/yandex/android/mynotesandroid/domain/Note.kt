@@ -2,6 +2,7 @@ package com.yandex.android.mynotesandroid.domain
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
+import android.support.annotation.NonNull
 import com.google.gson.annotations.SerializedName
 import com.yandex.android.mynotesandroid.data.locale.NotesDao
 
@@ -12,17 +13,18 @@ class Note(id: String, title: String, content: String, date: Long) {
 
     @SerializedName("id")
     @ColumnInfo(name = NotesDao.Columns.ID)
+    @NonNull
     private val mId : String = id
 
     @SerializedName("title")
     @ColumnInfo(name = NotesDao.Columns.TITLE)
     private val mTitle : String = title
 
-    @SerializedName("title")
+    @SerializedName("content")
     @ColumnInfo(name = NotesDao.Columns.CONTENT)
     private val mContent : String = content
 
-    @SerializedName("title")
+    @SerializedName("date")
     @ColumnInfo(name = NotesDao.Columns.DATE)
     private val mDate : Long = date
 
