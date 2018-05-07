@@ -5,10 +5,18 @@ import android.content.Context
 import com.yandex.android.mynotesandroid.data.locale.LocalRepositoryImpl
 import com.yandex.android.mynotesandroid.data.locale.NotesDao
 import com.yandex.android.mynotesandroid.data.locale.NotesDatabase
+import com.yandex.android.mynotesandroid.data.remote.NotesService
+import com.yandex.android.mynotesandroid.data.remote.RemoteRepositoryImpl
 import com.yandex.android.mynotesandroid.domain.LoadNotesUseCase
 import com.yandex.android.mynotesandroid.domain.LocalRepository
+import com.yandex.android.mynotesandroid.domain.RemoteRepository
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -45,6 +53,32 @@ class AppModule(private val appContext : Context) {
     @Singleton
     fun provideLocalRepository(notesDao: NotesDao) : LocalRepository {
         return LocalRepositoryImpl(notesDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRemoteRepository(notesService: NotesService) : RemoteRepository {
+        return RemoteRepositoryImpl(notesService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotesService() : NotesService {
+
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BASIC
+        val client = OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build()
+
+        return Retrofit.Builder()
+                .baseUrl(NotesService.BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+                .create(NotesService::class.java)
+
     }
 
 }

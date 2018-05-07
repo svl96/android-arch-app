@@ -5,8 +5,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.nfc.Tag
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import com.yandex.android.mynotesandroid.R
