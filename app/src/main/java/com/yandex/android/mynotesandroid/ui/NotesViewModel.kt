@@ -78,8 +78,23 @@ class NotesViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun onUpdateNotes() {
-        loadNotesUseCase
+        Log.d(TAG, "OnUpdateNotes")
+        loadNotesUseCase?.updateNotes()
+                ?.subscribeOn(Schedulers.io())
+                ?.subscribe(
+                        {response ->
+                            Log.d(TAG, "response")
+                            if (response.isSuccessful) {
+                                val notes : List<Note> = response.body() ?: listOf()
+                                if (notes.isNotEmpty()) {
+                                    Log.d(TAG, notes[0].getTitle())
+                                }
+                            }
+                        },
+                        {
+                            throwable -> Log.e(TAG, "updateRepos()", throwable)
+                        }
+                )
     }
-
 
 }

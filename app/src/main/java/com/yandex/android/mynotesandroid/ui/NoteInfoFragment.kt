@@ -2,15 +2,11 @@ package com.yandex.android.mynotesandroid.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.nfc.Tag
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.TextView
 import com.yandex.android.mynotesandroid.R
 
 
@@ -58,10 +54,8 @@ class NoteInfoFragment : Fragment() {
         val noteId : String? = arguments.getString(NOTE_ID_KEY)
         if (noteId != null && noteId != "") {
             noteInfoViewModel?.loadNote(noteId)
-            Log.d(TAG, (savedInstanceState == null).toString())
-            if (savedInstanceState == null) {
+            if (savedInstanceState == null)
                 subscribeUi()
-            }
         }
     }
 
@@ -79,21 +73,15 @@ class NoteInfoFragment : Fragment() {
     }
 
     private fun saveNote() {
-        noteInfoViewModel?.getTitle()?.value = titleView?.text.toString()
-        noteInfoViewModel?.getContent()?.value = contentView?.text.toString()
-
-        noteInfoViewModel?.onSave()
+        noteInfoViewModel?.saveData(titleView?.text.toString(), contentView?.text.toString())
     }
 
     private fun subscribeUi() {
         Log.d(TAG, "subscribeUi")
-        noteInfoViewModel?.getTitle()?.observe(this, Observer { title ->
-            Log.d(TAG, "Update UI")
-            titleView?.setText(title)
-        })
 
-        noteInfoViewModel?.getContent()?.observe(this, Observer { content ->
-            contentView?.setText(content)
+        noteInfoViewModel?.getSingleLiveEvent()?.observe(this, Observer { note ->
+            titleView?.setText(note?.getTitle())
+            contentView?.setText(note?.getContent())
         })
 
     }

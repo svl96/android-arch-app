@@ -11,7 +11,6 @@ import com.yandex.android.mynotesandroid.domain.LoadNotesUseCase
 import com.yandex.android.mynotesandroid.domain.Note
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
@@ -25,16 +24,13 @@ class NoteInfoViewModel(app: Application) : AndroidViewModel(app) {
     var loadNotesUseCase : LoadNotesUseCase? = null
     @Inject set
 
-    private val mNoteInfoLiveData : MutableLiveData<Note> = MutableLiveData()
-    private val mTitleLiveData : MutableLiveData<String> = MutableLiveData()
-    private val mContentLiveData : MutableLiveData<String> = MutableLiveData()
     private val mShowError : MutableLiveData<Boolean> = MutableLiveData()
+    private val mNoteInfoLiveData : SingleLiveEvent<Note> = SingleLiveEvent()
 
     private val mCompositeDisposable = CompositeDisposable()
 
     init {
         (app as App).getAppComponent().inject(this)
-        mNoteInfoLiveData.value = null
     }
 
     fun loadNote(noteId: String) {
@@ -42,14 +38,13 @@ class NoteInfoViewModel(app: Application) : AndroidViewModel(app) {
             mShowError.postValue(true)
             return
         }
-        val disposable: Disposable = loadNotesUseCase!!.loadNote(noteId)
+        val disposable: Disposable = loadNotesUseCase!!.getNote(noteId)
                 .subscribe(
                         { notes ->
                             if (notes.isNotEmpty()) {
                                 val note = notes[0]
                                 mNoteInfoLiveData.postValue(note)
-                                mTitleLiveData.postValue(note.getTitle())
-                                mContentLiveData.postValue(note.getContent())
+                                mNoteInfoLiveData.postValue(note)
                                 mShowError.postValue(false)
                             } else {
                                 mShowError.postValue(true)
@@ -65,9 +60,7 @@ class NoteInfoViewModel(app: Application) : AndroidViewModel(app) {
         mCompositeDisposable.add(disposable)
     }
 
-    private fun createNote() : Note? {
-        val title = mTitleLiveData.value ?: ""
-        val content = mContentLiveData.value ?: ""
+    private fun createNote(title: String, content: String) : Note? {
         if (title == "" && content == "") {
             return null
         }
@@ -77,9 +70,7 @@ class NoteInfoViewModel(app: Application) : AndroidViewModel(app) {
         return Note(noteId, title, content, date)
     }
 
-    private fun editNote() : Note? {
-        val newTitle = mTitleLiveData.value ?: ""
-        val newContent = mContentLiveData.value ?: ""
+    private fun editNote(newTitle: String, newContent: String) : Note? {
         val oldTitle = mNoteInfoLiveData.value?.getTitle()
         val oldContent = mNoteInfoLiveData.value?.getContent()
         val noteId = mNoteInfoLiveData.value!!.getId()
@@ -91,21 +82,20 @@ class NoteInfoViewModel(app: Application) : AndroidViewModel(app) {
         return Note(noteId, newTitle, newContent, date)
     }
 
-    fun onSave() {
+    fun saveData(title: String, content: String) {
         val note = if (mNoteInfoLiveData.value == null) {
-            createNote()
-        } else { editNote() }
+            createNote(title, content)
+        } else {
+            editNote(title, content)
+        }
+
         if (note != null) {
             loadNotesUseCase?.insertOrUpdateNotes(listOf(note))
         }
     }
 
-    fun getTitle(): MutableLiveData<String> {
-        return mTitleLiveData
-    }
-
-    fun getContent() : MutableLiveData<String> {
-        return mContentLiveData
+    fun getSingleLiveEvent() : LiveData<Note> {
+        return mNoteInfoLiveData
     }
 
     fun getShowError() : LiveData<Boolean> {

@@ -12,7 +12,7 @@ interface NotesService {
     }
 
     @GET("/notes")
-    fun getNotes() : Single<Response<List<Note>>>
+    fun getNotes(@Header("Authorization") authorization: String) : Single<Response<List<Note>>>
 
     @GET("/notes/{uid}")
     fun getNote(@Path("uid") id: String) : Single<Response<Note>>

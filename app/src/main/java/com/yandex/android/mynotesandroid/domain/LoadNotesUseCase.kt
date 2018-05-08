@@ -1,23 +1,26 @@
 package com.yandex.android.mynotesandroid.domain
 
 import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import retrofit2.Response
 
 
-class LoadNotesUseCase(val localRepository: LocalRepository) {
+class LoadNotesUseCase(private val localRepository: LocalRepository,
+                       private val remoteRepository: RemoteRepository) {
 
     fun getNotes() : Flowable<List<Note>> {
         val data = localRepository.getNotesList()
         // here we update data from remote repository
-        updateNotes()
+        // updateNotes()
         return data
     }
 
-    fun updateNotes() {
-        return
+    fun updateNotes() : Single<Response<List<Note>>> {
+        return remoteRepository.getNotes()
     }
 
-    fun loadNote(noteId: String) : Flowable<List<Note>> {
+    fun getNote(noteId: String) : Flowable<List<Note>> {
         val data = localRepository.getNote(noteId)
         // here we do something, or don't
         return data

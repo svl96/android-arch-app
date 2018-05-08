@@ -45,7 +45,8 @@ class NotesFragment : Fragment() {
         floatingButton?.setOnClickListener { vi ->
 //            Snackbar.make(vi, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
-                openNoteInfoFragment(null)
+//                openNoteInfoFragment(null)
+            onUpdateNotes()
         }
 
         setupRecyclerView()
@@ -83,7 +84,6 @@ class NotesFragment : Fragment() {
 
     private fun subscribeUi() {
         notesViewModel?.getNotes()?.observe(this, Observer { notes ->
-            Log.d(TAG, "Update UI")
             notesRecyclerAdapter?.setNotes(notes)
         })
 
