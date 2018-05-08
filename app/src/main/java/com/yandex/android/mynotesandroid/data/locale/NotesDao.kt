@@ -1,9 +1,6 @@
 package com.yandex.android.mynotesandroid.data.locale
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import android.support.annotation.NonNull
 import com.yandex.android.mynotesandroid.domain.Note
 import io.reactivex.Flowable
@@ -31,7 +28,10 @@ abstract class NotesDao {
     abstract fun getNotesList() : Flowable<List<Note>>
 
     @NonNull
-    @Query("SELECT * FROM $TABLE_NAME WHERE id = :noteId")
-    abstract fun getNote(noteId: String) : Flowable<List<Note>>
+    @Query("SELECT * FROM $TABLE_NAME WHERE id = :uid")
+    abstract fun getNote(uid: String) : Flowable<List<Note>>
+
+    @Delete
+    abstract fun deleteNote(note: Note)
 
 }

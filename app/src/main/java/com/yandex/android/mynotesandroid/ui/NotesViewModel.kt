@@ -47,6 +47,7 @@ class NotesViewModel(app: Application) : AndroidViewModel(app) {
         val disposable : Disposable = loadNotesUseCase!!.getNotes()
                 .subscribe(
                         { notes : List<Note> ->
+                            Log.d(TAG, "Load New Data")
                             mNotesLiveData.postValue(notes)
                             mShowError.postValue(false)
                             mShowLoading.postValue(false)
@@ -80,21 +81,6 @@ class NotesViewModel(app: Application) : AndroidViewModel(app) {
     fun onUpdateNotes() {
         Log.d(TAG, "OnUpdateNotes")
         loadNotesUseCase?.updateNotes()
-                ?.subscribeOn(Schedulers.io())
-                ?.subscribe(
-                        {response ->
-                            Log.d(TAG, "response")
-                            if (response.isSuccessful) {
-                                val notes : List<Note> = response.body() ?: listOf()
-                                if (notes.isNotEmpty()) {
-                                    Log.d(TAG, notes[0].getTitle())
-                                }
-                            }
-                        },
-                        {
-                            throwable -> Log.e(TAG, "updateRepos()", throwable)
-                        }
-                )
     }
 
 }

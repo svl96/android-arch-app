@@ -2,7 +2,6 @@ package com.yandex.android.mynotesandroid.di
 
 import android.arch.persistence.room.Room
 import android.content.Context
-import android.util.Log
 import com.yandex.android.mynotesandroid.data.locale.LocalRepositoryImpl
 import com.yandex.android.mynotesandroid.data.locale.NotesDao
 import com.yandex.android.mynotesandroid.data.locale.NotesDatabase
@@ -11,13 +10,11 @@ import com.yandex.android.mynotesandroid.data.remote.RemoteRepositoryImpl
 import com.yandex.android.mynotesandroid.domain.LoadNotesUseCase
 import com.yandex.android.mynotesandroid.domain.LocalRepository
 import com.yandex.android.mynotesandroid.domain.RemoteRepository
-import com.yandex.android.mynotesandroid.service.AuthService
+import com.yandex.android.mynotesandroid.data.remote.AuthService
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory

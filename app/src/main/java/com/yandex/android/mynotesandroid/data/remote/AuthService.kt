@@ -1,4 +1,4 @@
-package com.yandex.android.mynotesandroid.service
+package com.yandex.android.mynotesandroid.data.remote
 
 import android.accounts.Account
 import android.accounts.AccountManager

@@ -11,7 +11,7 @@ import com.yandex.android.mynotesandroid.data.locale.NotesDao
         primaryKeys = [NotesDao.Columns.ID])
 class Note(id: String, title: String, content: String, date: Long) {
 
-    @SerializedName("id")
+    @SerializedName("uid")
     @ColumnInfo(name = NotesDao.Columns.ID)
     @NonNull
     private val mId : String = id

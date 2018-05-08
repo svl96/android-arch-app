@@ -19,4 +19,8 @@ class LocalRepositoryImpl(private val notesDao: NotesDao) : LocalRepository {
         notesDao.insertOrUpdate(notes)
     }
 
+    override fun deleteNote(note: Note) {
+        notesDao.deleteNote(note)
+    }
+
 }

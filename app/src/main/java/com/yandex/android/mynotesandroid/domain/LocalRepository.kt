@@ -10,4 +10,6 @@ interface LocalRepository {
     fun insertOrUpdate(notes: List<Note>)
 
     fun getNote(noteId: String) : Flowable<List<Note>>
+
+    fun deleteNote(note: Note)
 }

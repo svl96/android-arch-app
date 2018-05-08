@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.util.Log
 import com.yandex.android.mynotesandroid.R
 import android.widget.Toast
@@ -31,6 +32,7 @@ class NotesFragment : Fragment() {
     private var recyclerView : RecyclerView? = null
     private var floatingButton : FloatingActionButton? = null
     private var notesRecyclerAdapter : NotesRecyclerAdapter? = null
+    private var swipeRefreshLayout : SwipeRefreshLayout? = null
 
     private var notesViewModel : NotesViewModel? = null
 
@@ -40,13 +42,15 @@ class NotesFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        floatingButton = view?.findViewById(R.id.fab)
 
+        swipeRefreshLayout = view?.findViewById(R.id.swipe_refresh)
+        swipeRefreshLayout?.setOnRefreshListener { onUpdateNotes() }
+
+        floatingButton = view?.findViewById(R.id.fab)
         floatingButton?.setOnClickListener { vi ->
 //            Snackbar.make(vi, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
-//                openNoteInfoFragment(null)
-            onUpdateNotes()
+                    openNoteInfoFragment(null)
         }
 
         setupRecyclerView()
@@ -84,6 +88,8 @@ class NotesFragment : Fragment() {
 
     private fun subscribeUi() {
         notesViewModel?.getNotes()?.observe(this, Observer { notes ->
+            Log.d(TAG, "Update UI")
+            swipeRefreshLayout?.isRefreshing = false
             notesRecyclerAdapter?.setNotes(notes)
         })
 
@@ -94,11 +100,12 @@ class NotesFragment : Fragment() {
         })
 
         notesViewModel?.getShowLoading()?.observe(this, Observer { isShowLoading ->
-            Log.d(TAG, "Loading $isShowLoading")
+            swipeRefreshLayout?.isRefreshing = isShowLoading != null && isShowLoading
         })
     }
 
     private fun onUpdateNotes() {
+        Log.d(TAG, "OnUpdateNotes")
         notesViewModel?.onUpdateNotes()
     }
 }

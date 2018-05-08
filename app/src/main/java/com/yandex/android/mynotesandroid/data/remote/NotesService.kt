@@ -15,15 +15,19 @@ interface NotesService {
     fun getNotes(@Header("Authorization") authorization: String) : Single<Response<List<Note>>>
 
     @GET("/notes/{uid}")
-    fun getNote(@Path("uid") id: String) : Single<Response<Note>>
+    fun getNote(@Header("Authorization") authorization: String,
+                @Path("uid") uid: String) : Single<Response<Note>>
 
     @POST("/notes")
-    fun postNote( @Body note: Note)
+    fun postNote(@Header("Authorization") authorization: String,
+                 @Body note: Note) : Single<Response<Note>>
 
     @PUT("notes/{uid}")
-    fun updateNote(@Path("uid") id: String, @Body note: Note)
+    fun updateNote(@Header("Authorization") authorization: String,
+                   @Path("uid") uid: String, @Body note: Note) : Single<Response<Note>>
 
     @DELETE("notes/{uid}")
-    fun deleteNote(@Path("uid") id: String)
+    fun deleteNote(@Header("Authorization") authorization: String,
+                   @Path("uid") uid: String) : Single<Response<Note>>
 
 }
