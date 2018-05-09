@@ -52,11 +52,10 @@ class NoteInfoFragment : Fragment() {
 
         noteInfoViewModel = ViewModelProviders.of(this).get(NoteInfoViewModel::class.java)
         val noteId : String? = arguments.getString(NOTE_ID_KEY)
-        if (noteId != null && noteId != "") {
-            noteInfoViewModel?.loadNote(noteId)
-            if (savedInstanceState == null)
-                subscribeUi()
-        }
+        noteInfoViewModel?.loadNote(noteId)
+        if (savedInstanceState == null)
+            subscribeUi()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

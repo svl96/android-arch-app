@@ -50,6 +50,7 @@ class NotesFragment : Fragment() {
         floatingButton?.setOnClickListener { vi ->
 //            Snackbar.make(vi, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
+                    Log.d(TAG, "click()")
                     openNoteInfoFragment(null)
         }
 

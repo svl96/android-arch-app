@@ -1,6 +1,5 @@
 package com.yandex.android.mynotesandroid.data.remote
 
-import android.util.Log
 import com.yandex.android.mynotesandroid.domain.Note
 import com.yandex.android.mynotesandroid.domain.RemoteRepository
 import io.reactivex.Single
@@ -12,13 +11,12 @@ class RemoteRepositoryImpl(private val notesService: NotesService,
     : RemoteRepository {
 
     private fun getAuthHeader() : String {
-        val token = authService.getToken() ?: "bad_token"
+        val token = authService.getToken() ?: ""
         return "OAuth $token"
     }
 
     override fun getNotes(): Single<Response<List<Note>>> {
         val header = getAuthHeader()
-        Log.d("RemoteRepository", header)
         return notesService.getNotes(header)
     }
 

@@ -15,30 +15,42 @@ import java.util.*
 import javax.inject.Inject
 
 
-class NoteInfoViewModel(app: Application) : AndroidViewModel(app) {
+class NoteInfoViewModel: AndroidViewModel {
     companion object {
         const val TAG = "NoteInfoViewModel"
     }
 
+    constructor(app: Application) : super(app) {
+        (app as App).getAppComponent().inject(this)
+    }
+
+    constructor(app: Application, useCase: LoadNotesUseCase)  : super(app) {
+        loadNotesUseCase = useCase
+    }
 
     var loadNotesUseCase : LoadNotesUseCase? = null
     @Inject set
+
+    init {
+
+    }
 
     private val mShowError : MutableLiveData<Boolean> = MutableLiveData()
     private val mNoteInfoLiveData : SingleLiveEvent<Note> = SingleLiveEvent()
 
     private val mCompositeDisposable = CompositeDisposable()
 
-    init {
-        (app as App).getAppComponent().inject(this)
-    }
 
-    fun loadNote(noteId: String) {
+
+    fun loadNote(noteId: String?) {
+        if (noteId.isNullOrEmpty())
+            return
+
         if (loadNotesUseCase == null) {
             mShowError.postValue(true)
             return
         }
-        val disposable: Disposable = loadNotesUseCase!!.getNote(noteId)
+        val disposable: Disposable = loadNotesUseCase!!.getNote(noteId!!)
                 .subscribe(
                         { notes ->
                             if (notes.isNotEmpty()) {

@@ -1,16 +1,18 @@
 package com.yandex.android.mynotesandroid.di
 
+import android.accounts.AccountManager
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.yandex.android.mynotesandroid.data.locale.LocalRepositoryImpl
 import com.yandex.android.mynotesandroid.data.locale.NotesDao
 import com.yandex.android.mynotesandroid.data.locale.NotesDatabase
+import com.yandex.android.mynotesandroid.data.remote.AuthService
 import com.yandex.android.mynotesandroid.data.remote.NotesService
 import com.yandex.android.mynotesandroid.data.remote.RemoteRepositoryImpl
 import com.yandex.android.mynotesandroid.domain.LoadNotesUseCase
 import com.yandex.android.mynotesandroid.domain.LocalRepository
 import com.yandex.android.mynotesandroid.domain.RemoteRepository
-import com.yandex.android.mynotesandroid.data.remote.AuthService
+import com.yandex.android.mynotesandroid.data.remote.AuthServiceImpl
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -93,8 +95,14 @@ class AppModule(private val appContext : Context) {
 
     @Provides
     @Singleton
-    fun provideAuthService() : AuthService {
-        return AuthService(appContext)
+    fun provideAuthService(accountManager: AccountManager) : AuthService {
+        return AuthServiceImpl(accountManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providesAccountManager() : AccountManager {
+        return AccountManager.get(appContext)
     }
 
 }
